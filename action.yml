@@ -1,0 +1,50 @@
+name: 'List Files Action'
+description: 'List all matching files in specific path.'
+author: "Nagaraj Bhat"
+
+inputs:
+  repo:
+    description: "Repository name where to search files"
+    required: true
+  ref:
+    description: "Branch or tag to checkout"
+    default: "master"
+    required: false
+  modified_file:
+    description: "List of Path where searching files"
+    required: true
+  ext:
+    description: "File extension to match"
+    required: true
+  folder_map:
+    description: "List of foldernames for the path"
+    required: true
+outputs:
+  paths:
+    value: ${{ steps.py.outputs.paths }}
+    description: "List of all matching files"
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3.5.3
+      with:
+        repository: ${{ inputs.repo }}
+        ref: ${{ inputs.ref }}
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - shell: bash
+      id: py
+      name: Execute Python
+      env:
+        INPUT_MODIFIED_FILE: ${{ inputs.modified_file }}
+        INPUT_EXT: ${{ inputs.ext }}
+        INPUT_FOLDER_MAP: ${{ inputs.folder_map }}
+      run: python ${{ github.action_path }}/main.py
+
+branding:
+  icon: file
+  color: gray-dark
