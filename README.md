@@ -2,11 +2,10 @@
 
 <p align="center">
 
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/mirko-felice/list-files-action?label=latest-release)](https://github.com/mirko-felice/list-files-action/releases/latest)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/mirko-felice/list-files-action?label=latest-release)](https://github.com/github.com-seek4life:seek4life/list-files-with-condition/releases/latest)
 
-[![Test](https://github.com/mirko-felice/list-files-action/actions/workflows/test.yml/badge.svg)](https://github.com/mirko-felice/list-files-action/actions/workflows/test.yml)
+[![Test](https://github.com/github.com-seek4life:seek4life/list-files-with-condition/actions/workflows/test.yml/badge.svg)](https://github.com/github.com-seek4life:seek4life/list-files-with-condition/actions/workflows/test.yml)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mirko-felice_list-files-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mirko-felice_list-files-action)
 </p>
 GitHub action to list path of all files of a particular extension in the folder/directory
 specified by the user.
@@ -16,7 +15,7 @@ specified by the user.
 |------------------------------------------|---------------------------------------|
 | `repo` (required)                        | Repository name where to search files |
 | `ref`  (optional => default is 'master') | Branch or tag to checkout             |
-| `path` (required)                        | List ofPath where searching files     |
+| `modified_file` (required)               | List ofPath where searching files     |
 | `ext`  (required)                        | File extension to match               |
 | `folder_map`  (required)                 | list of list containing the conition  |
 
@@ -48,12 +47,13 @@ jobs:
     steps:
       - name: List Files
         id: list-files
-        uses: mirko-felice/list-files-action@v3.0.5
+        uses: seek4life/list-files-with-condition@v0.0.1
         with:
           repo: ${{ github.repository }}
           ref: ${{ github.ref }}
           path: "."
           ext: ".yml"
+          folder_map: '{"testconfigfile.hcl": ["test-folder1","test-folder2"]}'
   Test:
     needs: list-files
     strategy:
@@ -67,10 +67,6 @@ jobs:
 ```
 Output generated for the above yaml file (in this repository):
 
-```shell
-github/workflows/test.yml
-action.yml
-```
 
 ## License
 [MIT license]
