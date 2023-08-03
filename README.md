@@ -54,6 +54,7 @@ jobs:
           path: "."
           ext: ".yml"
           folder_map: '{"testconfigfile.hcl": ["test-folder1","test-folder2"]}'
+          fixed_modiified_files: '[]'  # Optional
   Test:
     needs: list-files
     strategy:

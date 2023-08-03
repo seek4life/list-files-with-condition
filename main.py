@@ -26,6 +26,7 @@ def main():
     modified_file = ast.literal_eval(os.environ["INPUT_MODIFIED_FILE"])
     extension = os.environ["INPUT_EXT"]
     condition = json.loads(os.environ["INPUT_CONDITION"])
+    fixed_modiified_files = json.loads(os.environ["INPUT_FIXED_MOD_FILES"])
 
     paths = ''
     print(modified_file,condition)
@@ -40,8 +41,7 @@ def main():
                                 if path_contains_directory(root, rule):
                                     paths = paths + '\"' + root + '/' + str(file) + '\", '
 
-    paths = remove_last_occurrence(paths, ',')
-    paths = "[" + paths + "]"
+    paths = str(list(set(list(ast.literal_eval(paths)) + fixed_modiified_files)))
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
         print(f'paths={paths}\n', file=f)
     print(paths)
