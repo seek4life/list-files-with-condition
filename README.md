@@ -2,7 +2,7 @@
 
 <p align="center">
 
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/mirko-felice/list-files-action?label=latest-release)](https://github.com/github.com-seek4life:seek4life/list-files-with-condition/releases/latest)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/seek4life/list-files-action?label=latest-release)](https://github.com/github.com-seek4life:seek4life/list-files-with-condition/releases/latest)
 
 [![Test](https://github.com/github.com-seek4life:seek4life/list-files-with-condition/actions/workflows/test.yml/badge.svg)](https://github.com/github.com-seek4life:seek4life/list-files-with-condition/actions/workflows/test.yml)
 
@@ -17,7 +17,7 @@ specified by the user.
 | `ref`  (optional => default is 'master') | Branch or tag to checkout             |
 | `modified_file` (required)               | List ofPath where searching files     |
 | `ext`  (required)                        | File extension to match               |
-| `folder_map`  (required)                 | list of list containing the conition  |
+| `condition`  (required)                 | list of list containing the conition  |
 
 ## Outputs
 

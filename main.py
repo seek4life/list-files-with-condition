@@ -25,13 +25,13 @@ def remove_last_occurrence(string: str, char: str):
 def main():
     modified_file = ast.literal_eval(os.environ["INPUT_MODIFIED_FILE"])
     extension = os.environ["INPUT_EXT"]
-    folder_map = json.loads(os.environ["INPUT_FOLDER_MAP"])
+    condition = json.loads(os.environ["INPUT_CONDITION"])
 
     paths = ''
-    print(modified_file,folder_map)
+    print(modified_file,condition)
 
     for modfile in list(modified_file):
-        for rule_file,rule_folder in folder_map.items():
+        for rule_file,rule_folder in condition.items():
             if os.path.basename(modfile) == rule_file:
                 for root, dirs, files in os.walk(os.path.dirname(modfile)):
                     for file in files:

@@ -16,7 +16,7 @@ inputs:
   ext:
     description: "File extension to match"
     required: true
-  folder_map:
+  condition:
     description: "List of foldernames for the path"
     required: true
 outputs:
@@ -42,7 +42,7 @@ runs:
       env:
         INPUT_MODIFIED_FILE: ${{ inputs.modified_file }}
         INPUT_EXT: ${{ inputs.ext }}
-        INPUT_FOLDER_MAP: ${{ inputs.folder_map }}
+        INPUT_CONDITION: ${{ inputs.condition }}
       run: python ${{ github.action_path }}/main.py
 
 branding:
