@@ -18,6 +18,8 @@ specified by the user.
 | `modified_file` (required)               | List ofPath where searching files     |
 | `ext`  (required)                        | File extension to match               |
 | `condition`  (required)                 | list of list containing the conition  |
+| `fixed_modiified_files`  (required)     | list of list fixed_modiified_files  |
+
 
 ## Outputs
 
@@ -53,7 +55,7 @@ jobs:
           ref: ${{ github.ref }}
           path: "."
           ext: ".yml"
-          folder_map: '{"testconfigfile.hcl": ["test-folder1","test-folder2"]}'
+          condition: '{"testconfigfile.hcl": ["test-folder1","test-folder2"]}'
           fixed_modiified_files: '[]'  # Optional
   Test:
     needs: list-files

@@ -26,22 +26,25 @@ def main():
     modified_file = ast.literal_eval(os.environ["INPUT_MODIFIED_FILE"])
     extension = os.environ["INPUT_EXT"]
     condition = json.loads(os.environ["INPUT_CONDITION"])
-    fixed_modiified_files = json.loads(os.environ["INPUT_FIXED_MOD_FILES"])
+    fixed_modified_files = json.loads(os.environ["INPUT_FIXED_MOD_FILES"])
 
     paths = ''
     print(modified_file,condition)
 
-    for modfile in list(modified_file):
-        for rule_file,rule_folder in condition.items():
+    for rule_file,rule_folders in condition.items():
+        print("Running for:",rule_file,rule_folders)
+        for modfile in list(modified_file):
             if os.path.basename(modfile) == rule_file:
                 for root, dirs, files in os.walk(os.path.dirname(modfile)):
+                    print("Checking for ",files, "in the folder", root)
                     for file in files:
                         if file.endswith(f'{extension}'):
-                            for rule in rule_folder:
+                            for rule in rule_folders:
                                 if path_contains_directory(root, rule):
                                     paths = paths + '\"' + root + '/' + str(file) + '\", '
-
-    paths = str(list(set(list(ast.literal_eval(paths)) + fixed_modiified_files)))
+    
+    paths = remove_last_occurrence(paths, ',')
+    paths = str(list(set(list(ast.literal_eval(paths)) + fixed_modified_files)))
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
         print(f'paths={paths}\n', file=f)
     print(paths)
