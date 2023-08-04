@@ -27,11 +27,10 @@ def main():
     extension = os.environ["INPUT_EXT"]
     condition = json.loads(os.environ["INPUT_CONDITION"])
     fixed_modified_files = json.loads(os.environ["INPUT_FIXED_MOD_FILES"])
+    print(modified_file,condition)
 
     if modified_file:
         paths = ''
-        print(modified_file,condition)
-
         for rule_file,rule_folders in condition.items():
             for modfile in list(modified_file):
                 if os.path.basename(modfile) == rule_file:
@@ -49,9 +48,7 @@ def main():
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
         print(f'paths={paths}\n', file=f)
     print(paths)
-
     sys.exit(0)
-
 
 if __name__ == "__main__":
     main()
