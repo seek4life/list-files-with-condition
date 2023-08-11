@@ -53,10 +53,10 @@ jobs:
         with:
           repo: ${{ github.repository }}
           ref: ${{ github.ref }}
-          path: "."
+          modified_file: "."
           ext: ".yml"
           condition: '{"testconfigfile.hcl": ["test-folder1","test-folder2"]}'
-          fixed_modiified_files: '[]'  # Optional
+          fixed_modified_files: '[]'  # Optional
   Test:
     needs: list-files
     strategy:

@@ -19,7 +19,7 @@ inputs:
   condition:
     description: "List of foldernames for the path"
     required: true
-  fixed_modiified_files:
+  fixed_modified_files:
     description: if modifiedfiles needs to be added directly to output"
     required: false
 outputs:
@@ -46,7 +46,7 @@ runs:
         INPUT_MODIFIED_FILE: ${{ inputs.modified_file }}
         INPUT_EXT: ${{ inputs.ext }}
         INPUT_CONDITION: ${{ inputs.condition }}
-        INPUT_FIXED_MOD_FILES: ${{ inputs.fixed_modiified_files }}
+        INPUT_FIXED_MOD_FILES: ${{ inputs.fixed_modified_files }}
       run: python ${{ github.action_path }}/main.py
 
 branding:

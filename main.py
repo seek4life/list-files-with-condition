@@ -25,7 +25,10 @@ def remove_last_occurrence(string: str, char: str):
 def main():
     modified_file = ast.literal_eval(os.environ["INPUT_MODIFIED_FILE"])
     extension = os.environ["INPUT_EXT"]
-    condition = json.loads(os.environ["INPUT_CONDITION"])
+    try:
+        condition = json.loads(os.environ["INPUT_CONDITION"])
+    except json.decoder.JSONDecodeError as err:
+        print("ERROR: Format error in passing the condition variable, check for quotes in",os.environ["INPUT_CONDITION"],": \n", err)
     fixed_modified_files = json.loads(os.environ["INPUT_FIXED_MOD_FILES"])
     print(modified_file,condition)
 

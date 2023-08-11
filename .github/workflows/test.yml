@@ -23,9 +23,10 @@ jobs:
         with:
           repo: ${{ github.repository }}
           ref: ${{ github.ref }}
-          modified_file: "."
+          modified_file: '["abb","acc"]'
           ext: ".yml"
-          folder_map: '{"test.hcl": ["test-folder1"]}'
+          condition: '{"test.hcl": ["test-folder1"]}'
+          fixed_modified_files: '["a","b","c"]'
   Test:
     needs: list-files
     strategy:
