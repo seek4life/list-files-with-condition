@@ -23,9 +23,9 @@ jobs:
         with:
           repo: ${{ github.repository }}
           ref: ${{ github.ref }}
-          modified_file: '["main.py"]'
+          modified_file: '["test/test.hcl"]'
           ext: ".py"
-          condition: '{"main.py": ["ISSUE_TEMPLATE"]}'
+          condition: '{"test.hcl": ["test-folder"]}'
           fixed_modified_files: '["README.md"]'
   Test:
     needs: list-files
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_TOKEN }}
       - name: Import GPG
@@ -57,7 +57,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GIT_COMMITTER_NAME: Nagaraj Bhat
-          GIT_COMMITTER_EMAIL: nagaraj1171@gmail.com  
+          GIT_COMMITTER_EMAIL: nagaraj1171@gmail.com
           GIT_AUTHOR_NAME: Nagaraj Bhat
           GIT_AUTHOR_EMAIL: nagaraj1171@gmail.com
         run: |
