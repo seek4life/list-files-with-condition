@@ -1,4 +1,6 @@
 {
+  "name": "semantic-node",
+  "version": "0.0.7",
   "engines": {
     "node": "18.17"
   },
