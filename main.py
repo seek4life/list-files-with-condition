@@ -55,8 +55,8 @@ def main():
         paths = fixed_modified_files
     
     
-    # with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-    #     print(f'paths={paths}\n', file=f)
+    with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+        print(f'paths={paths}\n', file=f)
     print(paths)
     sys.exit(0)
 

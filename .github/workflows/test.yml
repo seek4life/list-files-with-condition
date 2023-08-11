@@ -23,10 +23,10 @@ jobs:
         with:
           repo: ${{ github.repository }}
           ref: ${{ github.ref }}
-          modified_file: '["abb","acc"]'
-          ext: ".yml"
-          condition: '{"test.hcl": ["test-folder1"]}'
-          fixed_modified_files: '["a","b","c"]'
+          modified_file: '["main.py"]'
+          ext: ".py"
+          condition: '{"main.py": ["ISSUE_TEMPLATE"]}'
+          fixed_modified_files: '["README.md"]'
   Test:
     needs: list-files
     strategy:
