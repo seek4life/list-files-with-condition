@@ -30,7 +30,12 @@ def main():
     except json.decoder.JSONDecodeError as err:
         print("ERROR: Format error in passing the condition variable, check for quotes in",os.environ["INPUT_CONDITION"],": \n", err)
     fixed_modified_files = json.loads(os.environ["INPUT_FIXED_MOD_FILES"])
-    print(modified_file,condition)
+
+    print("INFO: INPUTS Provided:\n")
+    print("modified_file:",modified_file)
+    print("\nextension:",extension)
+    print("\ncondition:",condition)
+    print("\nfixed_modified_files:",fixed_modified_files,"\n")
 
     if modified_file:
         paths = ''
@@ -43,13 +48,15 @@ def main():
                                 for rule in rule_folders:
                                     if path_contains_directory(root, rule):
                                         paths = paths + '\"' + root + '/' + str(file) + '\", '
-        paths = str(list(set(list(ast.literal_eval(paths)) + fixed_modified_files)))
+
+        if paths != "":
+            paths = str(list(set(list(ast.literal_eval(paths)) + fixed_modified_files)))
     else:
         paths = fixed_modified_files
     
     
-    with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-        print(f'paths={paths}\n', file=f)
+    # with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+    #     print(f'paths={paths}\n', file=f)
     print(paths)
     sys.exit(0)
 
