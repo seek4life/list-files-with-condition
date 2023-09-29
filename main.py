@@ -12,6 +12,15 @@ def path_contains_directory(path, directory_name):
     # Check if the specified directory name is in the path components
     return directory_name in path_components
 
+def get_folders_up_to_root(path):
+    folders = []
+    while True:
+        folders.append(path)
+        if path == os.path.dirname(path):
+            break
+        path = os.path.dirname(path)
+    
+    return folders
 
 def remove_last_occurrence(string: str, char: str):
     length = len(string)
@@ -36,28 +45,41 @@ def main():
     print("\nextension:",extension)
     print("\ncondition:",condition)
     print("\nfixed_modified_files:",fixed_modified_files,"\n")
-
+    generate_list={}
     if modified_file:
         paths = ''
         for rule_file,rule_folders in condition.items():
             for modfile in list(modified_file):
                 if os.path.basename(modfile) == rule_file:
-                    for root, dirs, files in os.walk(os.path.dirname(modfile)):
-                        for file in files:
-                            if file.endswith(f'{extension}'):
-                                for rule in rule_folders:
-                                    if path_contains_directory(root, rule):
-                                        paths = paths + '\"' + root + '/' + str(file) + '\", '
+                    generate_list[modfile] = ()
+                    folders_up_to_root = get_folders_up_to_root(modfile)
+                    for folder in folders_up_to_root:
+                         
+                         for rule in rule_folders:
+                            if os.path.isdir(folder):
+                                
+                                folders = [f for f in os.listdir(folder) if os.path.isdir(os.path.join(folder, f))]
 
+                                for c_folder in folders:
+                                    if c_folder == rule:
+                                        f_folder = folder+"/"+rule
+                                        files = [f for f in os.listdir(f_folder) if os.path.join(f_folder, f)]
+                                        for file in files:
+                                            if file.endswith(f'{extension}'): 
+                                                generate_list[modfile] = f_folder+"/"+file
+
+
+        paths = generate_list.values()
         if paths != "":
-            paths = str(list(set(list(ast.literal_eval(paths)) + fixed_modified_files)))
+            
+            paths = str(list(set(list(paths) + list(fixed_modified_files))))
     else:
         paths = fixed_modified_files
     
     
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
         print(f'paths={paths}\n', file=f)
-    print(paths)
+    print("INFO: The final paths",paths)
     sys.exit(0)
 
 if __name__ == "__main__":
