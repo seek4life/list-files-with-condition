@@ -5,30 +5,16 @@ from pathlib import Path
 import json
 import ast
 
-def path_contains_directory(path, directory_name):
-    # Split the provided path into its individual components
-    path_components = os.path.normpath(path).split(os.path.sep)
-
-    # Check if the specified directory name is in the path components
-    return directory_name in path_components
-
-def get_folders_up_to_root(path):
-    folders = []
-    while True:
-        folders.append(path)
-        if path == os.path.dirname(path):
-            break
-        path = os.path.dirname(path)
-    
-    return folders
-
-def remove_last_occurrence(string: str, char: str):
-    length = len(string)
-    string2 = ''
-    for i in range(length):
-        if string[i] == char:
-            string2 = string[0:i] + string[i + 1:length]
-    return string2
+def list_files_and_folders(root_dir):
+    found_files = []
+    for root, dirs, files in os.walk(root_dir):
+        # for directory in dirs:
+        #     folder_path = os.path.join(root, directory)
+        #     print(f"Folder: {folder_path}")
+        for file in files:
+            file_path = os.path.join(root, file)
+            found_files.append(file_path)
+    return found_files
 
 
 def main():
@@ -50,28 +36,17 @@ def main():
         paths = ''
         for rule_file,rule_folders in condition.items():
             for modfile in list(modified_file):
-                if os.path.basename(modfile) == rule_file:
-                    generate_list[modfile] = ()
-                    folders_up_to_root = get_folders_up_to_root(modfile)
-                    for folder in folders_up_to_root:
-                         
+                if os.path.basename(modfile) == rule_file.split('/')[-1]:
+                    files_up_to_root = list_files_and_folders(rule_file.split('/')[0])
+                    for file in files_up_to_root:
                          for rule in rule_folders:
-                            if os.path.isdir(folder):
-                                
-                                folders = [f for f in os.listdir(folder) if os.path.isdir(os.path.join(folder, f))]
-
-                                for c_folder in folders:
-                                    if c_folder == rule:
-                                        f_folder = folder+"/"+rule
-                                        files = [f for f in os.listdir(f_folder) if os.path.join(f_folder, f)]
-                                        for file in files:
-                                            if file.endswith(f'{extension}'): 
-                                                generate_list[modfile] = f_folder+"/"+file
-
-
-        paths = generate_list.values()
-        if paths != "":
-            
+                            
+                            if (rule == file.split('/')[-2]) and (file.endswith(extension)):
+                                 print("adding:",file)
+                                 generate_list[modfile+file] = file
+ 
+    paths = generate_list.values()
+    if paths != "":   
             paths = str(list(set(list(paths) + list(fixed_modified_files))))
     else:
         paths = fixed_modified_files
