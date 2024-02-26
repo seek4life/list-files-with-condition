@@ -27,7 +27,7 @@ def find_files(directory, filename):
     return file_list
 
 def generate_paths(modified_files, extension, condition, fixed_modified_files):
-    paths = []
+    paths = list()
 
     for file_path in modified_files:
         directory = os.path.dirname(file_path)
@@ -43,7 +43,7 @@ def generate_paths(modified_files, extension, condition, fixed_modified_files):
     for fixed_file in fixed_modified_files:
         paths.append(fixed_file)
 
-    return paths
+    return list(set(paths))
 
 def main():
     modified_file = ast.literal_eval(os.environ["INPUT_MODIFIED_FILE"])
