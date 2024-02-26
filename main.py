@@ -42,8 +42,8 @@ def main():
     print("paths", output_paths)
     
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-        print(f'paths={paths}\n', file=f)
-    print("INFO: The final paths",paths)
+        print(f'paths={output_paths}\n', file=f)
+    print("INFO: The final paths",output_paths)
     sys.exit(0)
 
 if __name__ == "__main__":
