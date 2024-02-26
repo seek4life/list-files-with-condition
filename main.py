@@ -5,17 +5,40 @@ from pathlib import Path
 import json
 import ast
 
+def get_folders_up_to_root(path):
+    folders = []
+    while True:
+        folders.append(path)
+        if path == os.path.dirname(path):
+            break
+        path = os.path.dirname(path)
+    
+    return folders
+
+def find_files(directory, filename):
+    file_list = []
+
+    for root, dirs, files in os.walk(directory):
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        for file in files:
+            if file == filename:
+                file_list.append(os.path.join(root, file))
+
+    return file_list
+
 def generate_paths(modified_files, extension, condition, fixed_modified_files):
     paths = []
 
     for file_path in modified_files:
         directory = os.path.dirname(file_path)
         base_file_name = os.path.basename(file_path)
+        found_files = find_files(get_folders_up_to_root(os.path.dirname(file_path))[-2],extension)
 
         if base_file_name in condition:
             for rule in condition[base_file_name]:
-                new_path = os.path.join(directory, rule, extension)
-                paths.append(new_path)
+                for file in found_files:
+                    if rule in file:
+                        paths.append(file)
 
     for fixed_file in fixed_modified_files:
         paths.append(fixed_file)
