@@ -27,7 +27,7 @@ def find_files(directory, filename):
     return file_list
 
 def generate_paths(modified_files, extension, condition, fixed_modified_files):
-    paths = []
+    paths = set()
 
     for file_path in modified_files:
         directory = os.path.dirname(file_path)
