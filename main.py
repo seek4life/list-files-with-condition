@@ -32,7 +32,10 @@ def generate_paths(modified_files, extension, condition, fixed_modified_files):
     for file_path in modified_files:
         directory = os.path.dirname(file_path)
         base_file_name = os.path.basename(file_path)
-        found_files = find_files(get_folders_up_to_root(os.path.dirname(file_path))[-2],extension)
+        try:
+            found_files = find_files(get_folders_up_to_root(os.path.dirname(file_path))[-2],extension)
+        except IndexError:
+            return fixed_modified_files
 
         if base_file_name in condition:
             for rule in condition[base_file_name]:
