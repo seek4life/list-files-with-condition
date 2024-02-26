@@ -43,7 +43,7 @@ def generate_paths(modified_files, extension, condition, fixed_modified_files):
     for fixed_file in fixed_modified_files:
         paths.append(fixed_file)
 
-    return set(paths)
+    return list(set(paths))
 
 def main():
     modified_file = ast.literal_eval(os.environ["INPUT_MODIFIED_FILE"])
