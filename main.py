@@ -40,12 +40,6 @@ def main():
 
     # Print the result
     print("paths", output_paths)
-    if output_paths != "":
-            
-            paths = str(list(set(list(output_paths) + list(fixed_modified_files))))
-    else:
-        paths = output_paths
-    
     
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
         print(f'paths={paths}\n', file=f)
