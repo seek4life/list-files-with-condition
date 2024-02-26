@@ -5,31 +5,22 @@ from pathlib import Path
 import json
 import ast
 
-def path_contains_directory(path, directory_name):
-    # Split the provided path into its individual components
-    path_components = os.path.normpath(path).split(os.path.sep)
+def generate_paths(modified_files, extension, condition, fixed_modified_files):
+    paths = []
 
-    # Check if the specified directory name is in the path components
-    return directory_name in path_components
+    for file_path in modified_files:
+        directory = os.path.dirname(file_path)
+        base_file_name = os.path.basename(file_path)
 
-def get_folders_up_to_root(path):
-    folders = []
-    while True:
-        folders.append(path)
-        if path == os.path.dirname(path):
-            break
-        path = os.path.dirname(path)
-    
-    return folders
+        if base_file_name in condition:
+            for rule in condition[base_file_name]:
+                new_path = os.path.join(directory, rule, extension)
+                paths.append(new_path)
 
-def remove_last_occurrence(string: str, char: str):
-    length = len(string)
-    string2 = ''
-    for i in range(length):
-        if string[i] == char:
-            string2 = string[0:i] + string[i + 1:length]
-    return string2
+    for fixed_file in fixed_modified_files:
+        paths.append(fixed_file)
 
+    return paths
 
 def main():
     modified_file = ast.literal_eval(os.environ["INPUT_MODIFIED_FILE"])
@@ -45,36 +36,15 @@ def main():
     print("\nextension:",extension)
     print("\ncondition:",condition)
     print("\nfixed_modified_files:",fixed_modified_files,"\n")
-    generate_list={}
-    if modified_file:
-        paths = ''
-        for rule_file,rule_folders in condition.items():
-            for modfile in list(modified_file):
-                if os.path.basename(modfile) == rule_file:
-                    generate_list[modfile] = ()
-                    folders_up_to_root = get_folders_up_to_root(modfile)
-                    for folder in folders_up_to_root:
-                         
-                         for rule in rule_folders:
-                            if os.path.isdir(folder):
-                                
-                                folders = [f for f in os.listdir(folder) if os.path.isdir(os.path.join(folder, f))]
+    output_paths = generate_paths(modified_file, extension, condition, fixed_modified_files)
 
-                                for c_folder in folders:
-                                    if c_folder == rule:
-                                        f_folder = folder+"/"+rule
-                                        files = [f for f in os.listdir(f_folder) if os.path.join(f_folder, f)]
-                                        for file in files:
-                                            if file.endswith(f'{extension}'): 
-                                                generate_list[modfile] = f_folder+"/"+file
-
-
-        paths = generate_list.values()
-        if paths != "":
+    # Print the result
+    print("paths", output_paths)
+    if output_paths != "":
             
-            paths = str(list(set(list(paths) + list(fixed_modified_files))))
+            paths = str(list(set(list(output_paths) + list(fixed_modified_files))))
     else:
-        paths = fixed_modified_files
+        paths = output_paths
     
     
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
